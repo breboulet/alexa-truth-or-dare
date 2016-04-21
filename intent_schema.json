@@ -1,0 +1,38 @@
+{
+  "intents": [
+    {
+      "intent": "AMAZON.HelpIntent", 
+    }, 
+    {
+      "intent": "AMAZON.StopIntent", 
+    }, 
+    {
+      "intent": "AMAZON.CancelIntent", 
+    }, 
+    {
+      "intent": "GetTodCategories", 
+    }, 
+    {
+      "intent": "SetTodCategory", 
+      "slots": [
+        {
+          "name": "Category", 
+          "type": "TOD_CATEGORY"
+        }
+      ]
+    }, 
+    {
+      "intent": "GetTruthOrDare", 
+      "slots": [
+        {
+          "name": "Category", 
+          "type": "TOD_CATEGORY"
+        }, 
+        {
+          "name": "Type", 
+          "type": "TOD_TYPE"
+        }
+      ]
+    }
+  ]
+}
