@@ -1,0 +1,42 @@
+[
+	{
+        "category": "Truth or Dare for New Couples", 
+        "question": "What is your biggest fear in a relationship?", 
+        "type": "Truth"
+    }, 
+    {
+        "category": "Truth or Dare for New Couples", 
+        "question": "What was your funniest first date ever?", 
+        "type": "Truth"
+    }, 
+    {
+        "category": "Truth or Dare for New Couples", 
+        "question": "Do an impression of your favorite celebrity", 
+        "type": "Dare"
+    }, 
+    {
+        "category": "Truth or Dare for New Couples", 
+        "question": "Close your eyes and send a blind text to a random person", 
+        "type": "Dare"
+    }, 
+    {
+        "category": "Truth or Dare for New Couples", 
+        "question": "Go grab a broom and do your best tango", 
+        "type": "Dare"
+    },
+        {
+        "category": "Truth or Dare Questions for Married Couples", 
+        "question": "How many times have you and your spouse broken up before you got married?", 
+        "type": "Truth"
+    }, 
+    {
+        "category": "Truth or Dare Questions for Married Couples", 
+        "question": "Would you leave your spouse if it meant that you would be very rich?", 
+        "type": "Truth"
+    }, 
+        {
+        "category": "Truth or Dare Questions for Married Couples", 
+        "question": "Do an impression of your favourite in-law", 
+        "type": "Dare"
+    }
+]

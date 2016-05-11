@@ -1,3 +1,5 @@
 pytest
 click
 mock
+pkg_resources
+sqlite3
