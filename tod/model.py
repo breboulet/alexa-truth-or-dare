@@ -6,6 +6,10 @@ class Model:
     def __init__(self):
         self.dbConnection = Model.createdb()
 
+    def __del__(self):
+        self.dbConnection.cursor().close()
+        self.dbConnection.close()
+
     @staticmethod
     def createdb():
         dbconnection = sqlite3.connect(":memory:")
@@ -15,6 +19,12 @@ class Model:
                        "categoryid INTEGER, FOREIGN KEY(categoryid) REFERENCES categories(id) )")
         dbconnection.commit()
         return dbconnection
+
+    def populatefromjson(self, jsonfilepath):
+        with open(jsonfilepath) as data_file:
+            data = json.load(data_file)
+        for entry in data:
+            self.addquestion(entry['question'], entry['type'], entry['category'])
 
     def addcategory(self, name):
         categoryid = None
@@ -52,6 +62,11 @@ class Model:
         cursor.execute("SELECT * FROM questions WHERE type=? and categoryid=?", (truthordare, categoryid))
         return cursor.fetchall()
 
+    def getquestionwithid(self, questionid):
+        cursor = self.dbConnection.cursor()
+        cursor.execute("SELECT * FROM questions WHERE rowid=?", (questionid,))
+        return cursor.fetchone()
+
     def addquestion(self, sentence, truthordare, categoryname):
         categoryid = self.addcategory(categoryname)
         if categoryid is not None:
@@ -67,7 +82,7 @@ class Model:
                 print e
                 questionid = self.getquestionid(sentence)
             finally:
-                return questionid
+                return questionid, self.getquestionwithid(questionid)[2]
         else:
             return None
 
@@ -80,4 +95,3 @@ class Model:
         cursor = self.dbConnection.cursor()
         cursor.execute("SELECT * FROM questions")
         return cursor.fetchall()
-

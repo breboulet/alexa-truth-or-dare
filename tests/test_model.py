@@ -27,11 +27,11 @@ def test_getallcategories():
 
 def test_addquestion():
     _model = model.Model()
-    assert _model.addquestion("Question 1", "Truth", "Category 1") == 1
-    assert _model.addquestion("Question 2", "Truth", "Category 1") == 2
-    assert _model.addquestion("Question 3", "Truth", "Category 2") == 3
-    assert _model.addquestion("Question 3", "Truth", "Category 2") == 3
-    assert _model.addquestion("Question 3", "Truth", "Category 3") == 3
+    assert _model.addquestion("Question 1", "Truth", "Category 1") == (1, 1)
+    assert _model.addquestion("Question 2", "Truth", "Category 1") == (2, 1)
+    assert _model.addquestion("Question 3", "Truth", "Category 2") == (3, 2)
+    assert _model.addquestion("Question 3", "Truth", "Category 2") == (3, 2)
+    assert _model.addquestion("Question 3", "Truth", "Category 3") == (3, 2)
 
 
 def test_getcategoryid():
@@ -50,20 +50,28 @@ def test_getquestionid():
 
 def test_getquestionsoftypeandcategory():
     _model = model.Model()
-    _model.addquestion("Question 1", "Truth", "Category 1") == 1
-    _model.addquestion("Question 2", "Truth", "Category 1") == 2
-    _model.addquestion("Question 3", "Truth", "Category 2") == 3
-    _model.addquestion("Question 3", "Truth", "Category 2") == 3
-    _model.addquestion("Question 3", "Truth", "Category 3") == 3
-    _model.addquestion("Question 4", "Truth", "Category 2") == 4
-    _model.addquestion("Question 5", "Dare", "Category 2") == 4
+    _model.addquestion("Question 1", "Truth", "Category 1")
+    _model.addquestion("Question 2", "Truth", "Category 1")
+    _model.addquestion("Question 3", "Truth", "Category 2")
+    _model.addquestion("Question 3", "Truth", "Category 2")
+    _model.addquestion("Question 3", "Truth", "Category 3")
+    _model.addquestion("Question 4", "Truth", "Category 2")
+    _model.addquestion("Question 5", "Dare", "Category 2")
     assert len(_model.getquestionsoftypeandcategory("Truth", 2)) == 2
     assert len(_model.getquestionsoftypeandcategory("Dare", 2)) == 1
     assert len(_model.getquestionsoftypeandcategory("Dare", 1)) == 0
 
 
-def test_buildsqlitefromjson():
-    # result = cli.buildsqlitefromjson(pkg_resources.resource_filename("resources", "tods_test_sample.json"))
-    # for entry in result.cursor():
-    #     print entry['category']
-    assert True
+def test_getquestionwithid():
+    _model = model.Model()
+    _model.addquestion("Question 1", "Truth", "Category 1")
+    assert _model.getquestionwithid(0) is None
+    assert _model.getquestionwithid(1)[2] == 1
+
+
+def test_populatefromjson():
+    _model = model.Model()
+    _model.populatefromjson(pkg_resources.resource_filename("resources", "tods_test_sample.json"))
+    assert len(_model.getallcategories()) == 2
+    assert len(_model.getallquestions()) == 8
+    assert len(_model.getquestionsoftypeandcategory('Truth', 2)) == 2
