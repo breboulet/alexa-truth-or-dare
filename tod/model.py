@@ -1,5 +1,6 @@
 import json
 import sqlite3
+import logging
 
 
 class Model:
@@ -34,7 +35,7 @@ class Model:
             self.dbConnection.commit()
             category_id = cursor.lastrowid
         except sqlite3.IntegrityError, e:
-            print e
+            logging.info(e)
             category_id = self.get_category_id(name)
         finally:
             return category_id
@@ -84,7 +85,7 @@ class Model:
                 self.dbConnection.commit()
                 question_id = cursor.lastrowid
             except sqlite3.IntegrityError, e:
-                print e
+                logging.info(e)
                 question_id = self.get_question_id(sentence)
             finally:
                 return question_id, self.get_question_with_id(question_id)[3]
