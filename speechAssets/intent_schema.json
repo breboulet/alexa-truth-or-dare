@@ -11,13 +11,16 @@
     }, 
     {
       "intent": "GetTodCategories", 
-    }, 
+    },
+    {
+      "intent": "GetRules",
+    },
     {
       "intent": "SetTodCategory", 
       "slots": [
         {
           "name": "Category", 
-          "type": "TOD_CATEGORY"
+          "type": "LIST_OF_CATEGORIES"
         }
       ]
     }, 
@@ -26,11 +29,11 @@
       "slots": [
         {
           "name": "Category", 
-          "type": "TOD_CATEGORY"
+          "type": "LIST_OF_CATEGORIES"
         }, 
         {
           "name": "Type", 
-          "type": "TOD_TYPE"
+          "type": "TRUTH_OR_DARE"
         }
       ]
     }

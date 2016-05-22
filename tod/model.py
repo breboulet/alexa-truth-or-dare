@@ -1,6 +1,5 @@
 import json
 import sqlite3
-import logging
 
 
 class Model:
@@ -35,7 +34,7 @@ class Model:
             self.dbConnection.commit()
             category_id = cursor.lastrowid
         except sqlite3.IntegrityError, e:
-            logging.info(e)
+            print e
             category_id = self.get_category_id(name)
         finally:
             return category_id
@@ -60,12 +59,12 @@ class Model:
 
     def get_questions_of_type(self, truth_or_dare):
         cursor = self.dbConnection.cursor()
-        cursor.execute("SELECT * FROM questions WHERE type=?", (truth_or_dare,))
+        cursor.execute("SELECT * FROM questions WHERE type=?", (truth_or_dare.lower(),))
         return cursor.fetchall()
 
     def get_questions_of_type_and_category(self, truth_or_dare, category_id):
         cursor = self.dbConnection.cursor()
-        cursor.execute("SELECT * FROM questions WHERE type=? and categoryid=?", (truth_or_dare, category_id))
+        cursor.execute("SELECT * FROM questions WHERE type=? and categoryid=?", (truth_or_dare.lower(), category_id))
         return cursor.fetchall()
 
     def get_question_with_id(self, question_id):
@@ -79,13 +78,12 @@ class Model:
             question_id = None
             try:
                 cursor = self.dbConnection.cursor()
-                cursor.execute("INSERT INTO questions (sentence, type, categoryid) VALUES (?,?,?)", (sentence,
-                                                                                                     truth_or_dare,
-                                                                                                     category_id))
+                cursor.execute("INSERT INTO questions (sentence, type, categoryid) VALUES (?,?,?)",
+                               (sentence, truth_or_dare.lower(), category_id))
                 self.dbConnection.commit()
                 question_id = cursor.lastrowid
             except sqlite3.IntegrityError, e:
-                logging.info(e)
+                print e
                 question_id = self.get_question_id(sentence)
             finally:
                 return question_id, self.get_question_with_id(question_id)[3]

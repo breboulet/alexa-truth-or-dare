@@ -1,3 +1,5 @@
+GetRules tell me the rules
+
 GetTodCategories the truth or dare categories
 GetTodCategories the categories
 GetTodCategories the different categories
