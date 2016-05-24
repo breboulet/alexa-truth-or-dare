@@ -183,7 +183,7 @@ def test_set_category():
     assert expected_response == response
 
 
-def test_get_truth_or_dare_question():
+def test_get_truth_or_dare_question_with_empty_session_attributes():
     intent = {
         "name": "GetTruthOrDare",
         "slots": {
@@ -208,8 +208,92 @@ def test_get_truth_or_dare_question():
             "userId": "amzn1.account.1234"
         }
     }
+    expected_response = {
+        'version': '1.0',
+        'response': {
+            'outputSpeech': {
+                'text': "Put peanut butter on your nose, and try to to lick it off",
+                'type': 'PlainText'
+            },
+            'shouldEndSession': False,
+            'reprompt': {
+                'outputSpeech': {
+                    'text': None,
+                    'type': 'PlainText'
+                }
+            },
+            'card': {
+                'content': "SessionSpeechlet - Put peanut butter on your nose, and try to to lick it off",
+                'type': 'Simple',
+                'title': 'SessionSpeechlet - GetTruthOrDare'
+            }
+        },
+        'sessionAttributes': {
+            'category': 'family game night',
+            'dare_index': 1
+        }
+    }
     response = voice_interface.get_truth_or_dare_question(intent, session)
-    print response
+    assert response == expected_response
+
+
+def test_get_truth_or_dare_question_with_session_attributes():
+    intent = {
+        "name": "GetTruthOrDare",
+        "slots": {
+            "Category": {
+                "name": "Category",
+                "value": "family game night"
+            },
+            "Type": {
+                "name": "Type",
+                "value": "truth"
+            }
+        }
+    }
+    session = {
+        "new": False,
+        "sessionId": "amzn1.echo-api.session.1234",
+        "application": {
+            "applicationId": "amzn1.echo-sdk-ams.app.1234"
+        },
+        "attributes": {
+            'category': 'family game night',
+            'dare_index': 1,
+            'truth_index': 2
+        },
+        "user": {
+            "userId": "amzn1.account.1234"
+        }
+    }
+    expected_response = {
+        'version': '1.0',
+        'response': {
+            'outputSpeech': {
+                'text': "Have you ever snuck anyone into to the house?",
+                'type': 'PlainText'
+            },
+            'shouldEndSession': False,
+            'reprompt': {
+                'outputSpeech': {
+                    'text': None,
+                    'type': 'PlainText'
+                }
+            },
+            'card': {
+                'content': "SessionSpeechlet - Have you ever snuck anyone into to the house?",
+                'type': 'Simple',
+                'title': 'SessionSpeechlet - GetTruthOrDare'
+            }
+        },
+        'sessionAttributes': {
+            'category': 'family game night',
+            'dare_index': 1,
+            'truth_index': 3
+        }
+    }
+    response = voice_interface.get_truth_or_dare_question(intent, session)
+    assert response == expected_response
 
 
 

@@ -1,4 +1,3 @@
-import click
 import pkg_resources
 from tod import model
 
@@ -159,21 +158,16 @@ def get_truth_or_dare_question(intent, session):
             truth_or_dare = intent['slots']['Type']['value']
             questions = tod_model.get_questions_of_type_and_category(truth_or_dare,
                                                                      tod_model.get_category_id(category))
-            if truth_or_dare in session_attributes:
-                if 'cursor' in session_attributes[truth_or_dare]:
-                    cursor = session_attributes[truth_or_dare]['cursor']
-                else:
-                    session_attributes[truth_or_dare]['cursor'] = 0
+            index_key = truth_or_dare + '_index'
+            if index_key in session_attributes:
+                index = session_attributes[index_key]
             else:
-                pass
-                # TODO
-            cursor = 0 if session_attributes[truth_or_dare]['cursor'] is None \
-                else session_attributes[truth_or_dare]['cursor']
-            speech_output = questions[cursor]
+                index = 0
+            speech_output = questions[index][1]
             reprompt_text = None
-            cursor += 1
+            index += 1
             session_attributes['category'] = category
-            session_attributes[truth_or_dare]['cursor'] = cursor
+            session_attributes[index_key] = index
         else:
             speech_output = "I'm not sure which category you want to play. " \
                             "Please try again."
@@ -216,72 +210,6 @@ def get_categories():
                     "If you want to hear the different categories again, say: give me the categories."
     return build_response({},
                           build_speechlet_response("List of Categories", speech_output, reprompt_text, False))
-
-
-def prompt_category(categories):
-    user_input = click.prompt("What category do you want to play?", hide_input=True)
-    clean_user_input = user_input.strip().lower()
-    if clean_user_input in categories.lower():
-        play_category(user_input)
-    else:
-        apologize_and_exit()
-
-
-def play_category(category_name):
-    category_id = tod_model.get_category_id(category_name)
-    if category_id is not None:
-        click.echo("You're now playing in the category: " + category_name)
-        prompt_truth_or_dare_in_category(category_id)
-    else:
-        apologize_and_exit()
-
-
-def prompt_truth_or_dare_in_category(category_id, truth_cursor=0, dare_cursor=0):
-    user_input = click.prompt("Now, Truth or Dare?", hide_input=True)
-    clean_user_input = user_input.strip().lower()
-    if clean_user_input in ["truth", "dare"]:
-        say_question(category_id, user_input.strip().lower(), truth_cursor, dare_cursor)
-    else:
-        apologize_and_exit()
-
-
-def prompt_truth_in_category(category_id, truth_cursor, dare_cursor):
-    if click.confirm("Now, next Truth question?"):
-        say_question(category_id, "truth", truth_cursor, dare_cursor)
-    else:
-        end_the_game()
-
-
-def prompt_dare_in_category(category_id, truth_cursor, dare_cursor):
-    if click.confirm("Now, next Dare question?"):
-        say_question(category_id, "dare", truth_cursor, dare_cursor)
-    else:
-        end_the_game()
-
-
-def say_question(category_id, truth_or_dare, truth_cursor, dare_cursor):
-    questions = tod_model.get_questions_of_type_and_category(truth_or_dare, category_id)
-    if truth_or_dare in "truth":
-        if truth_cursor < len(questions):
-            click.echo(questions[truth_cursor][1])
-            truth_cursor += 1
-        else:
-            click.echo("Congratulations! You've heard all the Truth questions from this category!")
-            if click.confirm("Do you want to play the remaining Dare questions?"):
-                prompt_dare_in_category(category_id, truth_cursor, dare_cursor)
-            else:
-                end_the_game()
-    else:
-        if dare_cursor < len(questions):
-            click.echo(questions[dare_cursor][1])
-            dare_cursor += 1
-        else:
-            click.echo("Congratulations! You've heard all the Dare questions from this category!")
-            if click.confirm("Do you want to play the remaining Truth questions?"):
-                prompt_truth_in_category(category_id, truth_cursor, dare_cursor)
-            else:
-                end_the_game()
-    prompt_truth_or_dare_in_category(category_id, truth_cursor, dare_cursor)
 
 
 # --------------- Helpers that build all of the responses ----------------------
