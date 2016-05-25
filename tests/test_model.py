@@ -13,6 +13,7 @@ def test_create_db():
 
 def test_add_category():
     _model = model.Model()
+    assert _model.add_category(None) is None
     assert _model.add_category("category1") == 1
     assert _model.add_category("category2") == 2
     assert _model.add_category("category2") == 2
@@ -32,6 +33,7 @@ def test_add_question():
     assert _model.add_question("Question 3", "Truth", "Category 2") == (3, 2)
     assert _model.add_question("Question 3", "Truth", "Category 2") == (3, 2)
     assert _model.add_question("Question 3", "Truth", "Category 3") == (3, 2)
+    assert _model.add_question("Question 4", "Truth", None) is None
 
 
 def test_get_category_id():

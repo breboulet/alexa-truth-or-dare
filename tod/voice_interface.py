@@ -21,6 +21,7 @@ RULES_SPEECH = "In the game of Truth or Dare each participant has the choice in 
                "truths for each player. In the game of Truth or Dare, it is no fun if people pick truth every " \
                "single time."
 
+
 def lambda_handler(request_obj, context=None):
     """
     Uncomment this if statement and populate with your skill's application ID to
@@ -85,31 +86,34 @@ def set_category_intent_handler(request):
 
 @alexa.intent_handler('GetTruthOrDare')
 def get_truth_or_dare_question_intent_handler(request):
-    card_title = request.intent_name
-    session_attributes = request.session
-    should_end_session = False
-
     if 'Type' in request.slots:
         category = None
         if 'Category' in request.slots:
             category = request.slots['Category']
-        elif 'category' in session_attributes:
-            category = session_attributes['category']
+        elif 'category' in request.session:
+            category = request.session['category']
 
         if category:
             truth_or_dare = request.slots['Type']
             questions = tod_model.get_questions_of_type_and_category(truth_or_dare,
                                                                      tod_model.get_category_id(category))
             index_key = truth_or_dare + '_index'
-            if index_key in session_attributes:
-                index = session_attributes[index_key]
+            if index_key in request.session:
+                index = request.session[index_key]
             else:
                 index = 0
-            speech_output = questions[index][1]
+            if index < len(questions):
+                speech_output = questions[index][1]
+                index += 1
+                request.session['category'] = category
+                request.session[index_key] = index
+            else:
+                speech_output = "Congratulations! You completed the category " + category + ". If you want to hear " \
+                                                                                            "the list of categories " \
+                                                                                            "again, say: give me " \
+                                                                                            "the categories."
+                request.session = {}
             reprompt_text = None
-            index += 1
-            session_attributes['category'] = category
-            session_attributes[index_key] = index
         else:
             speech_output = "I'm not sure which category you want to play. " \
                             "Please try again."
@@ -148,7 +152,9 @@ def get_categories_intent_handler(request):
     reprompt_text = "Please tell me the category you want to play by saying, " \
                     "play category kids." \
                     "If you want to hear the different categories again, say: give me the categories."
-    return build_response({},
-                          build_speechlet_response("List of Categories", speech_output, reprompt_text, False))
+    return alexa.create_response(speech_output,
+                                 end_session=False,
+                                 card_obj=alexa.create_card("Rules"),
+                                 reprompt_message=reprompt_text)
 
 
