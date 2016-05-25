@@ -1,5 +1,4 @@
 pytest
-click
 mock
-pkg_resources
-sqlite3
+setuptools
+ask-alexa-pykit

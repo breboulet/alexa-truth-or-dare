@@ -1,18 +1,27 @@
 import pkg_resources
+from ask import alexa
 from tod import model
 
 
 tod_model = model.Model()
 tod_model.populate_from_json(pkg_resources.resource_filename("resources", "tods.json"))
+WELCOME_SPEECH = "Welcome to the Truth or Dare game. " \
+                 "If you want to hear the game rules, say: give me the rules." \
+                 "If you want me to list the different categories, say: give me the categories."
+WELCOME_REPROMPT = "If you want to hear the game rules, say: give me the rules." \
+                   "If you want me to list the different categories, say: give me the categories."
+END_SPEECH = "Thank you for trying the Truth or Dare game. Have a nice day!"
+DEFAULT_SPEECH = "Just Ask"
+RULES_SPEECH = "In the game of Truth or Dare each participant has the choice in whether they would like to complete " \
+               "a challenge, or express a truth. Dares are challenges that must be completed by the participant that " \
+               "they were given to. If a dare is not completed, there will be a penalty that will be decided by all " \
+               "participants in the game. For example, if someone refuses to do a dare, the group may decide that " \
+               "player cannot blink until next round.  If a participant chooses Truth, he or she must answer the given " \
+               "question truthfully. The players may decide if there were will be limited or unlimited amount of " \
+               "truths for each player. In the game of Truth or Dare, it is no fun if people pick truth every " \
+               "single time."
 
-
-def lambda_handler(event, context):
-    """ Route the incoming request based on type (LaunchRequest, IntentRequest,
-    etc.) The JSON body of the request is provided in the event parameter.
-    """
-    print("event.session.application.applicationId=" +
-          event['session']['application']['applicationId'])
-
+def lambda_handler(request_obj, context=None):
     """
     Uncomment this if statement and populate with your skill's application ID to
     prevent someone else from configuring a skill that sends requests to this
@@ -21,141 +30,74 @@ def lambda_handler(event, context):
     # if (event['session']['application']['applicationId'] !=
     #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
     #     raise ValueError("Invalid Application ID")
-
-    if event['session']['new']:
-        on_session_started({'requestId': event['request']['requestId']},
-                           event['session'])
-
-    if event['request']['type'] == "LaunchRequest":
-        return on_launch(event['request'], event['session'])
-    elif event['request']['type'] == "IntentRequest":
-        return on_intent(event['request'], event['session'])
-    elif event['request']['type'] == "SessionEndedRequest":
-        return on_session_ended(event['request'], event['session'])
+    return alexa.route_request(request_obj)
 
 
-def on_session_started(session_started_request, session):
-    """ Called when the session starts """
-
-    print("on_session_started requestId=" + session_started_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
+@alexa.request_handler("SessionEndedRequest")
+def session_ended_request_handler(request):
+    return alexa.create_response(END_SPEECH, end_session=True, card_obj=alexa.create_card("Session Ended"))
 
 
-def on_launch(launch_request, session):
-    """ Called when the user launches the skill without specifying what they
-    want
-    """
-
-    print("on_launch requestId=" + launch_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
-    # Dispatch to your skill's launch
-    return get_welcome_response()
+@alexa.default_handler()
+def default_handler(request):
+    return alexa.create_response(DEFAULT_SPEECH)
 
 
-def on_intent(intent_request, session):
-    """ Called when the user specifies an intent for this skill """
-
-    print("on_intent requestId=" + intent_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
-
-    intent = intent_request['intent']
-    intent_name = intent_request['intent']['name']
-
-    if intent_name == "SetTodCategory":
-        return set_category(intent, session)
-    elif intent_name == "GetTodCategories":
-        return get_categories()
-    elif intent_name == "GetRules":
-        return get_rules()
-    elif intent_name == "GetTruthOrDare":
-        return get_truth_or_dare_question(intent, session)
-    elif intent_name == "AMAZON.HelpIntent":
-        return get_welcome_response()
-    elif intent_name == "AMAZON.CancelIntent" or intent_name == "AMAZON.StopIntent":
-        return handle_session_end_request()
-    else:
-        raise ValueError("Invalid intent")
+@alexa.intent_handler("AMAZON.Help")
+def help_intent_handler(request):
+    return get_welcome_response(request)
 
 
-def on_session_ended(session_ended_request, session):
-    """ Called when the user ends the session.
-
-    Is not called when the skill returns should_end_session=true
-    """
-    print("on_session_ended requestId=" + session_ended_request['requestId'] +
-          ", sessionId=" + session['sessionId'])
+@alexa.request_handler("LaunchRequest")
+def launch_request_handler(request):
+    return get_welcome_response(request)
 
 
-# --------------- Functions that control the skill's behavior ------------------
+def get_welcome_response(request):
+    return alexa.create_response(WELCOME_SPEECH,
+                                 end_session=False,
+                                 card_obj=alexa.create_card("Welcome"),
+                                 reprompt_message=WELCOME_REPROMPT)
 
 
-def get_welcome_response():
-    """ If we wanted to initialize the session to have some attributes we could
-    add those here
-    """
-
-    session_attributes = {}
-    card_title = "Welcome"
-    speech_output = "Welcome to the Truth or Dare game. " \
-                    "If you want to hear the game rules, say: give me the rules." \
-                    "If you want me to list the different categories, say: give me the categories."
-
-    reprompt_text = "If you want to hear the game rules, say: give me the rules." \
-                    "If you want me to list the different categories, say: give me the categories."
-    should_end_session = False
-    return build_response(session_attributes, build_speechlet_response(
-        card_title, speech_output, reprompt_text, should_end_session))
-
-
-def handle_session_end_request():
-    card_title = "Session Ended"
-    speech_output = "Thank you for trying the Truth or Dare game. " \
-                    "Have a nice day! "
-    # Setting this to true ends the session and exits the skill.
-    should_end_session = True
-    return build_response({}, build_speechlet_response(
-        card_title, speech_output, None, should_end_session))
-
-
-def set_category(intent, session):
+@alexa.intent_handler('SetTodCategory')
+def set_category_intent_handler(request):
     """ Sets the category in the session and prepares the speech to reply to the user. """
-
-    card_title = intent['name']
-    session_attributes = {}
-    should_end_session = False
-
-    if 'Category' in intent['slots']:
-        category = intent['slots']['Category']['value']
-        session_attributes = {"category": category}
+    if 'Category' in request.slots:
+        category = request.slots['Category']
+        request.session['category'] = category
         speech_output = "We'll now play with questions from the category " + category + ". " + \
                         "You can ask me a truth or a dare question by saying, " \
-                        "give me a truth question, or give me a dare"
+                        "give me a truth question, or give me a dare."
         reprompt_text = "You can ask me a truth or a dare question by saying, " \
-                        "give me a truth question, or give me a dare"
+                        "give me a truth question, or give me a dare."
     else:
         speech_output = "I'm not sure of which category you want to play. " \
                         "Please try again."
         reprompt_text = "I'm not sure of which category you want to play. " \
                         "Please tell me the category you want to play by saying, " \
                         "play category kids."
-    return build_response(session_attributes,
-                          build_speechlet_response(card_title, speech_output, reprompt_text, should_end_session))
+    return alexa.create_response(speech_output,
+                                 end_session=False,
+                                 card_obj=alexa.create_card(request.intent_name),
+                                 reprompt_message=reprompt_text)
 
 
-def get_truth_or_dare_question(intent, session):
-    card_title = intent['name']
-    session_attributes = session['attributes']
+@alexa.intent_handler('GetTruthOrDare')
+def get_truth_or_dare_question_intent_handler(request):
+    card_title = request.intent_name
+    session_attributes = request.session
     should_end_session = False
 
-    if 'Type' in intent['slots']:
+    if 'Type' in request.slots:
         category = None
-        if 'Category' in intent['slots']:
-            category = intent['slots']['Category']['value']
-        elif 'category' in session['attributes']:
+        if 'Category' in request.slots:
+            category = request.slots['Category']
+        elif 'category' in session_attributes:
             category = session_attributes['category']
 
         if category:
-            truth_or_dare = intent['slots']['Type']['value']
+            truth_or_dare = request.slots['Type']
             questions = tod_model.get_questions_of_type_and_category(truth_or_dare,
                                                                      tod_model.get_category_id(category))
             index_key = truth_or_dare + '_index'
@@ -180,23 +122,21 @@ def get_truth_or_dare_question(intent, session):
         reprompt_text = "I'm not sure if you asked for a truth or a dare. " \
                         "You can ask me a truth or a dare question by saying, " \
                         "give me a truth question, or give me a dare"
-    return build_response(session_attributes,
-                          build_speechlet_response(card_title, speech_output, reprompt_text, should_end_session))
+    return alexa.create_response(speech_output,
+                                 end_session=False,
+                                 card_obj=alexa.create_card(request.intent_name),
+                                 reprompt_message=reprompt_text)
 
 
-def get_rules():
-    rules = "In the game of Truth or Dare each participant has the choice in whether they would like to complete " \
-            "a challenge, or express a truth. Dares are challenges that must be completed by the participant that " \
-            "they were given to. If a dare is not completed, there will be a penalty that will be decided by all " \
-            "participants in the game. For example, if someone refuses to do a dare, the group may decide that " \
-            "player cannot blink until next round.  If a participant chooses Truth, he or she must answer the given " \
-            "question truthfully. The players may decide if there were will be limited or unlimited amount of " \
-            "truths for each player. In the game of Truth or Dare, it is no fun if people pick truth every " \
-            "single time."
-    return build_response({}, build_speechlet_response("Rules", rules, None, False))
+@alexa.intent_handler('GetRules')
+def get_rules_intent_handler(request):
+    return alexa.create_response(RULES_SPEECH,
+                                 end_session=False,
+                                 card_obj=alexa.create_card("Rules"))
 
 
-def get_categories():
+@alexa.intent_handler('GetTodCategories')
+def get_categories_intent_handler(request):
     """ Gets the list of categories and asks the user to choose one. """
 
     categories = ""
@@ -211,35 +151,4 @@ def get_categories():
     return build_response({},
                           build_speechlet_response("List of Categories", speech_output, reprompt_text, False))
 
-
-# --------------- Helpers that build all of the responses ----------------------
-
-
-def build_speechlet_response(title, output, reprompt_text, should_end_session):
-    return {
-        'outputSpeech': {
-            'type': 'PlainText',
-            'text': output
-        },
-        'card': {
-            'type': 'Simple',
-            'title': 'SessionSpeechlet - ' + title,
-            'content': 'SessionSpeechlet - ' + output
-        },
-        'reprompt': {
-            'outputSpeech': {
-                'type': 'PlainText',
-                'text': reprompt_text
-            }
-        },
-        'shouldEndSession': should_end_session
-    }
-
-
-def build_response(session_attributes, speechlet_response):
-    return {
-        'version': '1.0',
-        'sessionAttributes': session_attributes,
-        'response': speechlet_response
-    }
 

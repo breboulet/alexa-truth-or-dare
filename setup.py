@@ -3,7 +3,7 @@ An Alexa skill to play Truth or Dare
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click', 'pytest', 'mock', 'pkg_resources', 'sqlite3']
+dependencies = ['pytest', 'mock', 'setuptools', 'ask-alexa-pykit']
 
 setup(
     name='tod',
