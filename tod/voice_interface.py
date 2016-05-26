@@ -16,9 +16,9 @@ RULES_SPEECH = "In the game of Truth or Dare each participant has the choice in 
                "a challenge, or express a truth. Dares are challenges that must be completed by the participant that " \
                "they were given to. If a dare is not completed, there will be a penalty that will be decided by all " \
                "participants in the game. For example, if someone refuses to do a dare, the group may decide that " \
-               "player cannot blink until next round.  If a participant chooses Truth, he or she must answer the given " \
-               "question truthfully. The players may decide if there were will be limited or unlimited amount of " \
-               "truths for each player. In the game of Truth or Dare, it is no fun if people pick truth every " \
+               "player cannot blink until next round.  If a participant chooses Truth, he or she must answer the " \
+               "given question truthfully. The players may decide if there were will be limited or unlimited amount " \
+               "of truths for each player. In the game of Truth or Dare, it is no fun if people pick truth every " \
                "single time."
 
 

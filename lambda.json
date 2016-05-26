@@ -1,0 +1,14 @@
+{
+  "name": "truthOrDareUnrated",
+  "description": "An alexa skill to play the famous Truth or Dare game!",
+  "region": "us-east-1",
+  "handler": "tod/voice_interface.lambda_handler",
+  "role": "arn:aws:iam::085632198557:role/lambda_basic_execution",
+  "ignore": [
+    ".travis.yml",
+    ".git",
+    "/*.pyc"
+  ],
+  "timeout": 30,
+  "memory": 128
+}

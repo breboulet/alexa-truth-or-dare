@@ -1,0 +1,10 @@
+sudo: false
+language: python
+python:
+  - "2.7"
+install:
+  - pip install tox-travis
+  - pip install lambda-uploader
+script: tox
+after_success:
+  - lambda-uploader
