@@ -1,4 +1,5 @@
 from tod import voice_interface
+import mock
 
 
 def test_session_ended_request_handler():
@@ -9,6 +10,7 @@ def test_session_ended_request_handler():
         "version": "1.0"
     }
     response = voice_interface.lambda_handler(request)
+
     assert response['response']['outputSpeech']['text'] == voice_interface.END_SPEECH
 
 
@@ -130,7 +132,13 @@ def test_set_category_intent_handler_empty_slots():
                                                            "Please try again."
 
 
-def test_get_truth_or_dare_question_with_empty_session_attributes():
+@mock.patch('tod.model.Model.get_questions_of_type_and_category')
+def test_get_truth_or_dare_question_with_empty_session_attributes(get_questions_of_type_and_category):
+    get_questions_of_type_and_category.return_value = [
+        (1, "dare question 1", "dare", 6),
+        (2, "dare question 2", "dare", 6),
+        (3, "dare question 3", "dare", 6),
+    ]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -165,10 +173,16 @@ def test_get_truth_or_dare_question_with_empty_session_attributes():
         }
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "Put peanut butter on your nose, and try to to lick it off"
+    assert response['response']['outputSpeech']['text'] == "dare question 1"
 
 
-def test_get_truth_or_dare_question_with_category_in_session_not_slot():
+@mock.patch('tod.model.Model.get_questions_of_type_and_category')
+def test_get_truth_or_dare_question_with_category_in_session_not_slot(get_questions_of_type_and_category):
+    get_questions_of_type_and_category.return_value = [
+        (1, "dare question 1", "dare", 6),
+        (2, "dare question 2", "dare", 6),
+        (3, "dare question 3", "dare", 6),
+    ]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -199,10 +213,16 @@ def test_get_truth_or_dare_question_with_category_in_session_not_slot():
         }
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "Put peanut butter on your nose, and try to to lick it off"
+    assert response['response']['outputSpeech']['text'] == "dare question 1"
 
 
-def test_get_truth_or_dare_question_without_category():
+@mock.patch('tod.model.Model.get_questions_of_type_and_category')
+def test_get_truth_or_dare_question_without_category(get_questions_of_type_and_category):
+    get_questions_of_type_and_category.return_value = [
+        (1, "dare question 1", "dare", 6),
+        (2, "dare question 2", "dare", 6),
+        (3, "dare question 3", "dare", 6),
+    ]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -237,7 +257,13 @@ def test_get_truth_or_dare_question_without_category():
                                                            "Please try again."
 
 
-def test_get_truth_or_dare_question_with_session_attributes():
+@mock.patch('tod.model.Model.get_questions_of_type_and_category')
+def test_get_truth_or_dare_question_with_session_attributes(get_questions_of_type_and_category):
+    get_questions_of_type_and_category.return_value = [
+        (1, "truth question 1", "truth", 6),
+        (2, "truth question 2", "truth", 6),
+        (3, "truth question 3", "truth", 6),
+    ]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -276,11 +302,17 @@ def test_get_truth_or_dare_question_with_session_attributes():
         }
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "Have you ever snuck anyone into to the house?"
+    assert response['response']['outputSpeech']['text'] == "truth question 3"
     assert response['sessionAttributes'] == {'category': 'family game night', 'dare_index': 1, 'truth_index': 3}
 
 
-def test_get_truth_or_dare_question_category_completed():
+@mock.patch('tod.model.Model.get_questions_of_type_and_category')
+def test_get_truth_or_dare_question_category_completed(get_questions_of_type_and_category):
+    get_questions_of_type_and_category.return_value = [
+        (1, "truth question 1", "truth", 6),
+        (2, "truth question 2", "truth", 6),
+        (3, "truth question 3", "truth", 6),
+    ]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -310,7 +342,7 @@ def test_get_truth_or_dare_question_category_completed():
             },
             "attributes": {
                 'category': 'family game night',
-                'truth_index': 30
+                'truth_index': 3
             },
             "user": {
                 "userId": "amzn1.account.1234"
@@ -325,7 +357,13 @@ def test_get_truth_or_dare_question_category_completed():
     assert response['sessionAttributes'] == {}
 
 
-def test_get_truth_or_dare_question_without_type():
+@mock.patch('tod.model.Model.get_questions_of_type_and_category')
+def test_get_truth_or_dare_question_without_type(get_questions_of_type_and_category):
+    get_questions_of_type_and_category.return_value = [
+        (1, "dare question 1", "dare", 6),
+        (2, "dare question 2", "dare", 6),
+        (3, "dare question 3", "dare", 6),
+    ]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -360,7 +398,12 @@ def test_get_truth_or_dare_question_without_type():
                                                            "Please try again."
 
 
-def test_get_categories_intent_handler():
+@mock.patch('tod.model.Model.get_all_categories')
+def test_get_categories_intent_handler(get_all_categories):
+    category1 = "category1"
+    category2 = "category2"
+    category3 = "category3"
+    get_all_categories.return_value = [(category1,), (category2,), (category3,)]
     request = {
         "request": {
             "type": "IntentRequest",
@@ -374,10 +417,9 @@ def test_get_categories_intent_handler():
         "version": "1.0"
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "new couples. dirty and sexy. married couples. kids. " \
-                                                           "college students. family game night. teens. adults. " \
-                                                           "Please tell me the category you want to play by saying, " \
-                                                           "play category kids."
+    assert response['response']['outputSpeech']['text'] == (
+        category1 + ". " + category2 + ". " + category3 + ". Please tell me the category you want to play by saying, "
+                                                          "play category kids.")
 
 
 
