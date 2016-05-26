@@ -1,7 +1,4 @@
-"""
-An Alexa skill to play Truth or Dare
-"""
-from setuptools import find_packages, setup
+from distutils.core import setup
 from pip.req import parse_requirements
 
 version_file = open('VERSION')
@@ -17,11 +14,8 @@ setup(
     license='MIT',
     author='Bastien Reboulet',
     author_email='bastien.reboulet@gmail.com',
-    description='An Alexa skill to play Truth or Dare',
-    long_description=__doc__,
-    packages=find_packages(exclude=['tests']),
+    description='An Alexa skill to play Truth or Dare.',
+    packages=['tod'],
     include_package_data=True,
-    zip_safe=False,
-    platforms='any',
     install_requires=dependencies,
 )
