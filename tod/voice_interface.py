@@ -3,8 +3,8 @@ from ask import alexa
 from tod import model
 
 
-tod_model = model.Model()
-tod_model.populate_from_json(pkg_resources.resource_filename("resources", "tods.json"))
+TOD_MODEL = model.Model()
+TOD_MODEL.populate_from_json(pkg_resources.resource_filename("resources", "tods.json"))
 WELCOME_SPEECH = "Welcome to the Truth or Dare game. " \
                  "If you want to hear the game rules, say: give me the rules." \
                  "If you want me to list the different categories, say: give me the categories."
@@ -28,6 +28,7 @@ def lambda_handler(request_obj, context=None):
     prevent someone else from configuring a skill that sends requests to this
     function.
     """
+    del context
     # if (event['session']['application']['applicationId'] !=
     #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
     #     raise ValueError("Invalid Application ID")
@@ -36,11 +37,13 @@ def lambda_handler(request_obj, context=None):
 
 @alexa.request_handler("SessionEndedRequest")
 def session_ended_request_handler(request):
+    del request
     return alexa.create_response(END_SPEECH, end_session=True, card_obj=alexa.create_card("Session Ended"))
 
 
 @alexa.default_handler()
 def default_handler(request):
+    del request
     return alexa.create_response(DEFAULT_SPEECH)
 
 
@@ -55,6 +58,7 @@ def launch_request_handler(request):
 
 
 def get_welcome_response(request):
+    del request
     return alexa.create_response(WELCOME_SPEECH,
                                  end_session=False,
                                  card_obj=alexa.create_card("Welcome"),
@@ -95,8 +99,8 @@ def get_truth_or_dare_question_intent_handler(request):
 
         if category:
             truth_or_dare = request.slots['Type']
-            questions = tod_model.get_questions_of_type_and_category(truth_or_dare,
-                                                                     tod_model.get_category_id(category))
+            questions = TOD_MODEL.get_questions_of_type_and_category(truth_or_dare,
+                                                                     TOD_MODEL.get_category_id(category))
             index_key = truth_or_dare + '_index'
             if index_key in request.session:
                 index = request.session[index_key]
@@ -134,6 +138,7 @@ def get_truth_or_dare_question_intent_handler(request):
 
 @alexa.intent_handler('GetRules')
 def get_rules_intent_handler(request):
+    del request
     return alexa.create_response(RULES_SPEECH,
                                  end_session=False,
                                  card_obj=alexa.create_card("Rules"))
@@ -142,9 +147,10 @@ def get_rules_intent_handler(request):
 @alexa.intent_handler('GetTodCategories')
 def get_categories_intent_handler(request):
     """ Gets the list of categories and asks the user to choose one. """
+    del request
 
     categories = ""
-    for category in tod_model.get_all_categories():
+    for category in TOD_MODEL.get_all_categories():
         categories += category[0] + '. '
 
     speech_output = categories + "Please tell me the category you want to play by saying, " \
