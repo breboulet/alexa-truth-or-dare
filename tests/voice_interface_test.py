@@ -4,7 +4,19 @@ import mock
 
 def test_session_ended_request_handler():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
+            "requestId": "EdwRequestId.1234",
+            "timestamp": "2016-05-27T05:55:21Z",
             "type": "SessionEndedRequest"
         },
         "version": "1.0"
@@ -14,10 +26,79 @@ def test_session_ended_request_handler():
     assert response['response']['outputSpeech']['text'] == voice_interface.END_SPEECH
 
 
+def test_session_ended_intent():
+    request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
+        "request": {
+            "type": "IntentRequest",
+            "requestId": "1234",
+            "timestamp": "2016-05-22T18:36:12Z",
+            "intent": {
+                "name": "AMAZON.CancelIntent",
+            },
+            "locale": "en-US"
+        },
+        "version": "1.0"
+    }
+    response = voice_interface.lambda_handler(request)
+
+    assert response['response']['outputSpeech']['text'] == voice_interface.END_SPEECH
+
+
+def test_unknown_intent():
+    request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
+        "request": {
+            "type": "IntentRequest",
+            "requestId": "1234",
+            "timestamp": "2016-05-22T18:36:12Z",
+            "intent": {
+                "name": "UnknownIntent",
+            },
+            "locale": "en-US"
+        },
+        "version": "1.0"
+    }
+    response = voice_interface.lambda_handler(request)
+
+    assert response['response']['outputSpeech']['text'] == voice_interface.DEFAULT_SPEECH
+
+
 def test_launch_request_route_to_welcome():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": True
+        },
         "request": {
+            "requestId": "EdwRequestId.1234",
+            "timestamp": "2016-05-27T05:55:21Z",
             "type": "LaunchRequest"
+
         },
         "version": "1.0"
     }
@@ -28,7 +109,19 @@ def test_launch_request_route_to_welcome():
 
 def test_default_handler():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
+            "requestId": "EdwRequestId.1234",
+            "timestamp": "2016-05-27T05:55:21Z",
             "type": "UnknownRequest"
         },
         "version": "1.0"
@@ -39,12 +132,22 @@ def test_default_handler():
 
 def test_help_intent_handler():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
             "type": "IntentRequest",
             "requestId": "1234",
             "timestamp": "2016-05-22T18:36:12Z",
             "intent": {
-                "name": "AMAZON.Help",
+                "name": "AMAZON.HelpIntent",
             },
             "locale": "en-US"
         },
@@ -56,12 +159,22 @@ def test_help_intent_handler():
 
 def test_launch_request_handler():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
             "type": "IntentRequest",
             "requestId": "1234",
             "timestamp": "2016-05-22T18:36:12Z",
             "intent": {
-                "name": "AMAZON.Help",
+                "name": "AMAZON.HelpIntent",
             },
             "locale": "en-US"
         },
@@ -73,6 +186,16 @@ def test_launch_request_handler():
 
 def test_get_rules_intent_handler():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
             "type": "IntentRequest",
             "requestId": "1234",
@@ -90,6 +213,16 @@ def test_get_rules_intent_handler():
 
 def test_set_category_intent_handler():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
             "type": "IntentRequest",
             "requestId": "1234",
@@ -115,6 +248,16 @@ def test_set_category_intent_handler():
 
 def test_set_category_intent_handler_empty_slots():
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
             "type": "IntentRequest",
             "requestId": "1234",
@@ -405,6 +548,16 @@ def test_get_categories_intent_handler(get_all_categories):
     category3 = "category3"
     get_all_categories.return_value = [(category1,), (category2,), (category3,)]
     request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
         "request": {
             "type": "IntentRequest",
             "requestId": "1234",
@@ -419,7 +572,7 @@ def test_get_categories_intent_handler(get_all_categories):
     response = voice_interface.lambda_handler(request)
     assert response['response']['outputSpeech']['text'] == (
         category1 + ". " + category2 + ". " + category3 + ". Please tell me the category you want to play by saying, "
-                                                          "play category kids.")
+                                                          "play category kids, for example.")
 
 
 
