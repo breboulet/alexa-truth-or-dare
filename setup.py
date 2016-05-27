@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 from pip.req import parse_requirements
 
 version_file = open('VERSION')
@@ -18,4 +18,5 @@ setup(
     packages=['tod'],
     include_package_data=True,
     install_requires=dependencies,
+    test_suite='tests'
 )

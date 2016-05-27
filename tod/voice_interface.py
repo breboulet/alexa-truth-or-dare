@@ -28,7 +28,6 @@ def lambda_handler(request_obj, context=None):
     prevent someone else from configuring a skill that sends requests to this
     function.
     """
-    del context
     # if (event['session']['application']['applicationId'] !=
     #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
     #     raise ValueError("Invalid Application ID")
@@ -37,13 +36,11 @@ def lambda_handler(request_obj, context=None):
 
 @alexa.request_handler("SessionEndedRequest")
 def session_ended_request_handler(request):
-    del request
     return alexa.create_response(END_SPEECH, end_session=True, card_obj=alexa.create_card("Session Ended"))
 
 
 @alexa.default_handler()
 def default_handler(request):
-    del request
     return alexa.create_response(DEFAULT_SPEECH)
 
 
@@ -58,7 +55,6 @@ def launch_request_handler(request):
 
 
 def get_welcome_response(request):
-    del request
     return alexa.create_response(WELCOME_SPEECH,
                                  end_session=False,
                                  card_obj=alexa.create_card("Welcome"),
@@ -138,7 +134,6 @@ def get_truth_or_dare_question_intent_handler(request):
 
 @alexa.intent_handler('GetRules')
 def get_rules_intent_handler(request):
-    del request
     return alexa.create_response(RULES_SPEECH,
                                  end_session=False,
                                  card_obj=alexa.create_card("Rules"))
@@ -147,7 +142,6 @@ def get_rules_intent_handler(request):
 @alexa.intent_handler('GetTodCategories')
 def get_categories_intent_handler(request):
     """ Gets the list of categories and asks the user to choose one. """
-    del request
 
     categories = ""
     for category in TOD_MODEL.get_all_categories():

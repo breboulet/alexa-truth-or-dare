@@ -14,9 +14,7 @@ GetTodCategories tell me what are the truth or dare categories
 GetTodCategories tell me what are the different categories
 
 GetTruthOrDare give me a {Type} question from the category {Category}
-GetTruthOrDare give me a {Type} question
 GetTruthOrDare give me a {Type} from {Category}
-GetTruthOrDare give me a {Type}
 
 SetTodCategory go to {Category}
 SetTodCategory change the category to {Category}

@@ -1,22 +1,22 @@
 {
   "intents": [
     {
-      "intent": "AMAZON.HelpIntent", 
+      "intent": "AMAZON.HelpIntent"
     }, 
     {
-      "intent": "AMAZON.StopIntent", 
+      "intent": "AMAZON.StopIntent"
     }, 
     {
-      "intent": "AMAZON.CancelIntent", 
+      "intent": "AMAZON.CancelIntent"
     }, 
     {
-      "intent": "GetTodCategories", 
+      "intent": "GetTodCategories"
     },
     {
-      "intent": "GetRules",
+      "intent": "GetRules"
     },
     {
-      "intent": "SetTodCategory", 
+      "intent": "SetTodCategory",
       "slots": [
         {
           "name": "Category", 
