@@ -30,6 +30,12 @@ Simply run tox in the project folder:
 tox -c tox.ini
 ```
 
+## Contribution
+
+Pull requests are more than welcome! 
+Once merged, project is automatically build, packaged, and uploaded to the AWS Lambda. 
+Which will end up updating the Alexa Skill people play with in one click!
+
 ## License
 
 MIT
