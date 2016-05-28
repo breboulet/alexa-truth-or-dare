@@ -13,9 +13,13 @@ Party of 5? No! Party of 6 with Alexa! With Truth or Dare Unrated, let Alexa sur
 This project started to participate in a live contest: Hey Alexa! The Amazon Alexa Skill Contest on [Hackster.io](https://www.hackster.io)
 I did it mainly to learn new things and share what I learned with the community.
 
-## Installation
+## How to use
 
-Follow the documentation here: [Getting started guide for the Alexa Skills Kit](https://developer.amazon.com/appsandservices/solutions/alexa/alexa-skills-kit/getting-started-guide)
+1. Enable the skill in the Amazon Skills Section at alexa.amazon.com.
+2. Say "Alexa, ask Truth or Dare Unrated" to your Amazon device that supports Alexa (Echo, FireOS, FireTV, etc.)
+3. Alexa will prompt you with instructions on how to use Truth or Dare Unrated
+
+Reading advice: [Getting started guide for the Alexa Skills Kit](https://developer.amazon.com/appsandservices/solutions/alexa/alexa-skills-kit/getting-started-guide)
 
 ## API: Examples of utterances to play with the skill:
 ```
