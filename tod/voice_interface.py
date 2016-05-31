@@ -19,6 +19,8 @@ RULES_SPEECH = "In the game of Truth or Dare each participant has the choice in 
                "given question truthfully. The players may decide if there were will be limited or unlimited amount " \
                "of truths for each player. In the game of Truth or Dare, it is no fun if people pick truth every " \
                "single time."
+HELP_SPEECH = "Here are some things you can say: give me the categories, give me the rules, give me a dare from the " \
+              "category kids, play category kids. You can also say, stop, if you're done. So, how can I help?"
 
 
 def lambda_handler(event, context=None):
@@ -106,11 +108,12 @@ def session_ended_request_handler(intent, session):
 
 def default_handler(intent, session):
     return build_response(session.get('attributes', {}),
-                          build_speechlet_response("Unknown Intent", DEFAULT_SPEECH, None, False))
+                          build_speechlet_response("Unknown Intent", DEFAULT_SPEECH, None, True))
 
 
 def help_intent_handler(intent, session):
-    return get_welcome_response(intent, session)
+    return build_response(session.get('attributes', {}),
+                          build_speechlet_response("Help", HELP_SPEECH, None, False))
 
 
 def launch_request_handler(intent, session):
@@ -127,7 +130,7 @@ def set_category_intent_handler(intent, session):
     session_attributes = session.get('attributes', {})
     if session_attributes is None:  # fix crash on AWS lambda
         session_attributes = {}
-    if 'Category' in intent['slots']:
+    if 'Category' in intent['slots'] and 'value' in intent['slots']['Category']:
         category = intent['slots']['Category']['value']
         session_attributes['category'] = category
         speech_output = "We'll now play with questions from the category " + category + ". " + \
@@ -226,8 +229,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
         },
         'card': {
             'type': 'Simple',
-            'title': 'SessionSpeechlet - ' + title,
-            'content': 'SessionSpeechlet - ' + output
+            'title': title,
+            'content': output
         },
         'reprompt': {
             'outputSpeech': {

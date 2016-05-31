@@ -1,4 +1,12 @@
 GetRules tell me the rules
+GetRules give me the rules
+GetRules the rules
+GetRules rules
+GetRules could you please give me the rules
+GetRules what are the rules
+GetRules what are the game rules
+GetRules what are rules for this game
+GetRules what are the truth or dare rules
 
 GetTodCategories the truth or dare categories
 GetTodCategories the categories
@@ -15,6 +23,18 @@ GetTodCategories tell me what are the different categories
 
 GetTruthOrDare give me a {Type} question from the category {Category}
 GetTruthOrDare give me a {Type} from {Category}
+GetTruthOrDare a {Type} from the category {Category}
+GetTruthOrDare {Type}
+GetTruthOrDare {Type} question
+GetTruthOrDare give me a {Type}
+GetTruthOrDare give me a {Type} question
+GetTruthOrDare tell me a {Type}
+GetTruthOrDare tell me a {Type} question
 
 SetTodCategory go to {Category}
+SetTodCategory go to category {Category}
 SetTodCategory change the category to {Category}
+SetTodCategory I want to play the category {Category}
+SetTodCategory play the category {Category}
+SetTodCategory play category {Category}
+SetTodCategory category {Category}

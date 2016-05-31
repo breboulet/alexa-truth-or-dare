@@ -154,7 +154,7 @@ def test_help_intent_handler():
         "version": "1.0"
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == voice_interface.WELCOME_SPEECH
+    assert response['response']['outputSpeech']['text'] == voice_interface.HELP_SPEECH
 
 
 def test_launch_request_handler():
@@ -170,12 +170,9 @@ def test_launch_request_handler():
             "new": False
         },
         "request": {
-            "type": "IntentRequest",
+            "type": "LaunchRequest",
             "requestId": "1234",
             "timestamp": "2016-05-22T18:36:12Z",
-            "intent": {
-                "name": "AMAZON.HelpIntent",
-            },
             "locale": "en-US"
         },
         "version": "1.0"
@@ -265,6 +262,39 @@ def test_set_category_intent_handler_empty_slots():
             "intent": {
                 "name": "SetTodCategory",
                 "slots": {}
+            },
+            "locale": "en-US"
+        },
+        "version": "1.0"
+    }
+    response = voice_interface.lambda_handler(request)
+    assert response['response']['outputSpeech']['text'] == "I'm not sure of which category you want to play. " \
+                                                           "Please try again."
+
+
+def test_set_category_intent_handler_slot_without_value():
+    request = {
+        "session": {
+            "sessionId": "SessionId.1234",
+            "application": {
+                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+            },
+            "user": {
+                "userId": "amzn1.ask.account.1234"
+            },
+            "new": False
+        },
+        "request": {
+            "type": "IntentRequest",
+            "requestId": "1234",
+            "timestamp": "2016-05-22T18:36:12Z",
+            "intent": {
+                "name": "SetTodCategory",
+                "slots": {
+                    "Category": {
+                        "name": "Category"
+                    }
+                }
             },
             "locale": "en-US"
         },
