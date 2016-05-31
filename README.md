@@ -22,7 +22,7 @@ To run this example skill you need to do two things. The first is to deploy the 
 3. Skip the blueprint
 4. Name the Lambda Function "truthOrDareUnrated".
 5. Select the runtime as Pyhton
-6. Edit the lambda.json file with your own lambda settings (see [lambda-uploader](https://github.com/rackerlabs/lambda-uploader) for more info
+6. Edit the lambda.json file with your own AWS Lambda settings (see [lambda-uploader](https://github.com/rackerlabs/lambda-uploader) for more info)
 7. In the root directory of the project execute: "lambda-uploader"
 8. Set the Handler to "tod/voice_interface.lambda_handler".
 9. Create a "Lambda Basic Execution" role and click create.
