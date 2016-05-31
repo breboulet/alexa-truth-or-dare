@@ -48,11 +48,11 @@ To run this example skill you need to do two things. The first is to deploy the 
     User: "Alexa, open truth or dare unrated"
     Alexa: "Welcome to the Truth or Dare game. If you want to hear the game rules, say: give me the rules. If you want me to list the different categories, say: give me the categories."
     User: "Give me the categories"
-    Alexa: "The available categories are: category1. category2. category3. Please tell me the category you want to play by saying, play category category2, for example.""
+    Alexa: "The available categories are: category1. category2. category3. Please tell me the category you want to play by saying, play category category2, for example."
     User: "Play category category2"
     Alexa: "We'll now play with questions from the category category2. You can ask me a truth or a dare question by saying, give me a truth question, or give me a dare."
     User: "Give me a dare"
-    Alexa: "[Dare]
+    Alexa: "[Dare]"
     User: "Give me a truth question"
     Alexa: "[Truth question]"
     ...
