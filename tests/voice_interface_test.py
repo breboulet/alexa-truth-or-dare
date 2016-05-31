@@ -601,8 +601,11 @@ def test_get_categories_intent_handler(get_all_categories):
     }
     response = voice_interface.lambda_handler(request)
     assert response['response']['outputSpeech']['text'] == (
-        category1 + ". " + category2 + ". " + category3 + ". Please tell me the category you want to play by saying, "
-                                                          "play category kids, for example.")
+        "The available categories are: " + category1 + ". " + category2 + ". " + category3 + ". Please tell me the "
+                                                                                             "category you want to "
+                                                                                             "play by saying, play "
+                                                                                             "category kids, for "
+                                                                                             "example.")
 
 
 

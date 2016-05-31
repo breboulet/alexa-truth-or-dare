@@ -209,8 +209,8 @@ def get_categories_intent_handler(intent, session):
     for category in TOD_MODEL.get_all_categories():
         categories += category[0] + '. '
 
-    speech_output = categories + "Please tell me the category you want to play by saying, " \
-                                 "play category kids, for example."
+    speech_output = "The available categories are: " + categories + "Please tell me the category you want to play by " \
+                                                                    "saying, play category kids, for example."
     reprompt_text = "Please tell me the category you want to play by saying, " \
                     "play category kids, for example." \
                     "If you want to hear the different categories again, say: give me the categories."
