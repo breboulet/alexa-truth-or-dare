@@ -34,7 +34,7 @@ def lambda_handler(event, context=None):
     """
     # if (event['session']['application']['applicationId'] !=
     #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
-    #     raise ValueError("Invalid Application ID")c
+    #     raise ValueError("Invalid Application ID")
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
@@ -150,6 +150,7 @@ def set_category_intent_handler(intent, session):
 
 def get_truth_or_dare_question_intent_handler(intent, session):
     session_attributes = session.get('attributes', {})
+    should_end_session = False
     if session_attributes is None:  # fix crash on AWS lambda
         session_attributes = {}
     slots = intent.get('slots', {})
@@ -174,12 +175,14 @@ def get_truth_or_dare_question_intent_handler(intent, session):
                 index += 1
                 session_attributes['category'] = category
                 session_attributes[index_key] = index
+                speech_output += " Now tell me, do you want a Truth or a Dare?"
             else:
                 speech_output = "Congratulations! You completed the category " + category + ". If you want to hear " \
                                                                                             "the list of categories " \
                                                                                             "again, say: give me " \
                                                                                             "the categories."
                 session_attributes = {}
+                should_end_session = True
             reprompt_text = None
         else:
             speech_output = "I'm not sure which category you want to play. " \
@@ -187,6 +190,7 @@ def get_truth_or_dare_question_intent_handler(intent, session):
             reprompt_text = "I'm not sure which category you want to play. " \
                             "Please tell me the category you want to play by saying, " \
                             "play category kids, for example."
+            should_end_session = True
     else:
         speech_output = "I'm not sure if you asked for a truth or a dare. " \
                         "Please try again."
@@ -194,7 +198,7 @@ def get_truth_or_dare_question_intent_handler(intent, session):
                         "You can ask me a truth or a dare question by saying, " \
                         "give me a truth question, or give me a dare"
     return build_response(session_attributes,
-                          build_speechlet_response("GetTruthOrDare", speech_output, reprompt_text, False))
+                          build_speechlet_response("GetTruthOrDare", speech_output, reprompt_text, should_end_session))
 
 
 def get_rules_intent_handler(intent, session):

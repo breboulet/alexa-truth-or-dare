@@ -30,6 +30,8 @@ GetTruthOrDare give me a {Type}
 GetTruthOrDare give me a {Type} question
 GetTruthOrDare tell me a {Type}
 GetTruthOrDare tell me a {Type} question
+GetTruthOrDare a {Type}
+GetTruthOrDare I want a {Type}
 
 SetTodCategory go to {Category}
 SetTodCategory go to category {Category}

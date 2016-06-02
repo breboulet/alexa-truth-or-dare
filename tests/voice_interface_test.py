@@ -308,9 +308,9 @@ def test_set_category_intent_handler_slot_without_value():
 @mock.patch('tod.model.Model.get_questions_of_type_and_category')
 def test_get_truth_or_dare_question_with_empty_session_attributes(get_questions_of_type_and_category):
     get_questions_of_type_and_category.return_value = [
-        (1, "dare question 1", "dare", 6),
-        (2, "dare question 2", "dare", 6),
-        (3, "dare question 3", "dare", 6),
+        (1, "dare question 1.", "dare", 6),
+        (2, "dare question 2.", "dare", 6),
+        (3, "dare question 3.", "dare", 6),
     ]
     request = {
         "request": {
@@ -346,15 +346,16 @@ def test_get_truth_or_dare_question_with_empty_session_attributes(get_questions_
         }
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "dare question 1"
+    assert response['response']['outputSpeech']['text'] == "dare question 1. Now tell me, do you want a Truth " \
+                                                           "or a Dare?"
 
 
 @mock.patch('tod.model.Model.get_questions_of_type_and_category')
 def test_get_truth_or_dare_question_with_category_in_session_not_slot(get_questions_of_type_and_category):
     get_questions_of_type_and_category.return_value = [
-        (1, "dare question 1", "dare", 6),
-        (2, "dare question 2", "dare", 6),
-        (3, "dare question 3", "dare", 6),
+        (1, "dare question 1.", "dare", 6),
+        (2, "dare question 2.", "dare", 6),
+        (3, "dare question 3.", "dare", 6),
     ]
     request = {
         "request": {
@@ -386,7 +387,8 @@ def test_get_truth_or_dare_question_with_category_in_session_not_slot(get_questi
         }
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "dare question 1"
+    assert response['response']['outputSpeech']['text'] == "dare question 1. Now tell me, do you want a Truth " \
+                                                           "or a Dare?"
 
 
 @mock.patch('tod.model.Model.get_questions_of_type_and_category')
@@ -433,9 +435,9 @@ def test_get_truth_or_dare_question_without_category(get_questions_of_type_and_c
 @mock.patch('tod.model.Model.get_questions_of_type_and_category')
 def test_get_truth_or_dare_question_with_session_attributes(get_questions_of_type_and_category):
     get_questions_of_type_and_category.return_value = [
-        (1, "truth question 1", "truth", 6),
-        (2, "truth question 2", "truth", 6),
-        (3, "truth question 3", "truth", 6),
+        (1, "truth question 1?", "truth", 6),
+        (2, "truth question 2?", "truth", 6),
+        (3, "truth question 3?", "truth", 6),
     ]
     request = {
         "request": {
@@ -475,7 +477,8 @@ def test_get_truth_or_dare_question_with_session_attributes(get_questions_of_typ
         }
     }
     response = voice_interface.lambda_handler(request)
-    assert response['response']['outputSpeech']['text'] == "truth question 3"
+    assert response['response']['outputSpeech']['text'] == "truth question 3? Now tell me, do you want a Truth " \
+                                                           "or a Dare?"
     assert response['sessionAttributes'] == {'category': 'family game night', 'dare_index': 1, 'truth_index': 3}
 
 
@@ -606,6 +609,9 @@ def test_get_categories_intent_handler(get_all_categories):
                                                                                              "play by saying, play "
                                                                                              "category kids, for "
                                                                                              "example.")
+
+
+
 
 
 
