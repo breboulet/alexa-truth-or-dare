@@ -2,6 +2,9 @@ import pkg_resources
 from tod import model
 
 
+ALEXA_SKILL_ID = ""
+with open(pkg_resources.resource_filename("resources", "alexa_skill_id.txt"), 'r') as alexa_skill_id_file:
+    ALEXA_SKILL_ID = alexa_skill_id_file.read().strip()
 TOD_MODEL = model.Model()
 TOD_MODEL.populate_from_json(pkg_resources.resource_filename("resources", "tods.json"))
 WELCOME_SPEECH = "Welcome to the Truth or Dare game. " \
@@ -27,14 +30,8 @@ def lambda_handler(event, context=None):
     print("event.session.application.applicationId=" +
           event['session']['application']['applicationId'])
 
-    """
-    Uncomment this if statement and populate with your skill's application ID to
-    prevent someone else from configuring a skill that sends requests to this
-    function.
-    """
-    # if (event['session']['application']['applicationId'] !=
-    #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
-    #     raise ValueError("Invalid Application ID")
+    if event['session']['application']['applicationId'] != ALEXA_SKILL_ID:
+        raise ValueError("Invalid Application ID")
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},

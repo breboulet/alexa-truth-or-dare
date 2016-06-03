@@ -7,7 +7,7 @@ def test_session_ended_request_handler():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -31,7 +31,7 @@ def test_session_ended_intent():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -59,7 +59,7 @@ def test_unknown_intent():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -87,7 +87,7 @@ def test_launch_request_route_to_welcome():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -112,7 +112,7 @@ def test_default_handler():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -135,7 +135,7 @@ def test_help_intent_handler():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -162,7 +162,7 @@ def test_launch_request_handler():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -186,7 +186,7 @@ def test_get_rules_intent_handler():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -213,7 +213,7 @@ def test_set_category_intent_handler():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -248,7 +248,7 @@ def test_set_category_intent_handler_empty_slots():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -277,7 +277,7 @@ def test_set_category_intent_handler_slot_without_value():
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
@@ -337,7 +337,7 @@ def test_get_truth_or_dare_question_with_empty_session_attributes(get_questions_
             "new": False,
             "sessionId": "amzn1.echo-api.session.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "attributes": {},
             "user": {
@@ -378,7 +378,7 @@ def test_get_truth_or_dare_question_with_category_in_session_not_slot(get_questi
             "new": False,
             "sessionId": "amzn1.echo-api.session.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "attributes": {"category": "family game night"},
             "user": {
@@ -419,7 +419,7 @@ def test_get_truth_or_dare_question_without_category(get_questions_of_type_and_c
             "new": False,
             "sessionId": "amzn1.echo-api.session.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "attributes": {},
             "user": {
@@ -464,7 +464,7 @@ def test_get_truth_or_dare_question_with_session_attributes(get_questions_of_typ
             "new": False,
             "sessionId": "amzn1.echo-api.session.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "attributes": {
                 'category': 'family game night',
@@ -514,7 +514,7 @@ def test_get_truth_or_dare_question_category_completed(get_questions_of_type_and
             "new": False,
             "sessionId": "amzn1.echo-api.session.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "attributes": {
                 'category': 'family game night',
@@ -561,7 +561,7 @@ def test_get_truth_or_dare_question_without_type(get_questions_of_type_and_categ
             "new": False,
             "sessionId": "amzn1.echo-api.session.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "attributes": {},
             "user": {
@@ -584,7 +584,7 @@ def test_get_categories_intent_handler(get_all_categories):
         "session": {
             "sessionId": "SessionId.1234",
             "application": {
-                "applicationId": "amzn1.echo-sdk-ams.app.1234"
+                "applicationId": voice_interface.ALEXA_SKILL_ID
             },
             "user": {
                 "userId": "amzn1.ask.account.1234"
