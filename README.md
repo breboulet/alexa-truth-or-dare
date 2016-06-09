@@ -37,8 +37,8 @@ To run this example skill you need to do two things. The first is to deploy the 
 2. Set "TruthOrDareUnrated" for the skill name and "truth or dare unrated" as the invocation name, this is what is used to activate your skill. For example you would say: "Alexa, Ask truth or dare unrated to give me the categories."
 3. Select the Lambda ARN for the skill Endpoint and paste the ARN copied from above. Click Next.
 4. Copy the custom slot types from the customSlotTypes folder. Each file in the folder represents a new custom slot type. The name of the file is the name of the custom slot type, and the values in the file are the values for the custom slot.
-5. Copy the Intent Schema from the included IntentSchema.json.
-6. Copy the Sample Utterances from the included SampleUtterances.txt. Click Next.
+5. Copy the Intent Schema from the included intent_schema.json.
+6. Copy the Sample Utterances from the included utterances.txt. Click Next.
 8. You are now able to start testing your sample skill! You should be able to go to the [Echo webpage](http://echo.amazon.com/#skills) and see your skill enabled.
 9. In order to test it, try to say some of the Sample Utterances from the Examples section below.
 10. Your skill is now saved and once you are finished testing you can continue to publish your skill.
