@@ -200,7 +200,7 @@ def get_truth_or_dare_question_intent_handler(intent, session):
 
 def get_rules_intent_handler(intent, session):
     return build_response(session.get('attributes', {}),
-                          build_speechlet_response("Rules", RULES_SPEECH, None, False))
+                          build_speechlet_response("Rules", RULES_SPEECH, None, True))
 
 
 def get_categories_intent_handler(intent, session):
