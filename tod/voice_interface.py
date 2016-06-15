@@ -27,8 +27,8 @@ HELP_SPEECH = "Here are some things you can say: give me the categories, give me
 
 
 def lambda_handler(event, context=None):
-    print("event.session.application.applicationId=" +
-          event['session']['application']['applicationId'])
+    
+    print event
 
     if event['session']['application']['applicationId'] != ALEXA_SKILL_ID:
         raise ValueError("Invalid Application ID")
