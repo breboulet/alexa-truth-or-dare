@@ -3,6 +3,8 @@
 
 # Truth or Dare Unrated Alexa Skill
 
+[Truth or Dare Unrated on the Alexa Skills Store](http://www.alexaskillstore.com/Games/Truth-or-Dare-Unrated)
+
 ## Synopsis
 
 An AWS Lambda function implementing an alexa skill to play the famous Truth or Dare Party Game with multiple categories.
